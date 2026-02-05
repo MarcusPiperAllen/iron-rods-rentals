@@ -71,25 +71,25 @@ export const equipmentData: Equipment[] = [
     id: "spreader-8ft",
     name: "The 'Spreader' Attachment",
     type: "attachment",
-    length: "8ft wide",
+    length: "8ft WIDE",
     forkWidth: "4-inch forks",
-    description: "Custom 8ft-wide forklift spreader designed for 4-inch wide forks. Ideal for balancing long loads and bundles.",
-    specs: ["8ft wide spread", "Fits 4-inch forks", "For long loads/bundles", "Heavy-duty steel"]
+    description: "Custom 8ft-WIDE forklift spreader designed for 4-inch wide forks. Provides stability for balancing long steel 'sticks' and bundles by creating wide support points.",
+    specs: ["8ft WIDE spread", "For 4-inch forks", "Stabilizes long loads", "Heavy-duty steel"]
   },
   {
     id: "fork-ext-6ft",
     name: "Fork Extensions - 6ft",
     type: "attachment",
-    length: "6ft",
-    description: "Extend your reach with these 6ft fork extensions. Great for handling longer materials safely.",
-    specs: ["6ft length", "Universal fit", "Quick install", "Steel construction"]
+    length: "6ft LONG",
+    description: "6ft-LONG slide-on fork extension sleeves. Extend your reach for handling longer materials and reaching deeper into trailers.",
+    specs: ["6ft LONG sleeves", "Slide-on design", "Universal fit", "Steel construction"]
   },
   {
     id: "fork-ext-8ft",
     name: "Fork Extensions - 8ft",
     type: "attachment",
-    length: "8ft",
-    description: "Maximum reach with 8ft fork extensions. Handle the longest materials with confidence.",
-    specs: ["8ft length", "Universal fit", "Quick install", "Steel construction"]
+    length: "8ft LONG",
+    description: "8ft-LONG slide-on fork extension sleeves. Maximum reach for the longest materials and deepest trailer loads.",
+    specs: ["8ft LONG sleeves", "Slide-on design", "Universal fit", "Steel construction"]
   }
 ];

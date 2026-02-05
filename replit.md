@@ -1,7 +1,7 @@
 # Iron Rod's Equipment Rentals
 
 ## Overview
-A professional equipment rental web application for forklifts and specialized attachments. Built with a rugged, industrial aesthetic featuring Charcoal, Safety Orange, and White color palette with a "Safety First" professional vibe.
+A professional equipment rental web application for forklifts and specialized attachments. Built with a rugged, industrial aesthetic featuring Charcoal, Safety Orange, and White color palette with a "Safety First" professional vibe. A division of Ironrod Steel Co.
 
 ## Tech Stack
 - **Frontend**: React with TypeScript, Tailwind CSS, Shadcn UI components
@@ -15,6 +15,7 @@ A professional equipment rental web application for forklifts and specialized at
 client/
   src/
     components/       # Reusable UI components
+      Header.tsx      # Navigation header
       Hero.tsx        # Landing hero section
       InventoryGrid.tsx # Equipment catalog display
       PricingCalculator.tsx # Smart pricing tool
@@ -22,6 +23,8 @@ client/
       Footer.tsx      # Site footer
     pages/
       Home.tsx        # Main landing page
+      About.tsx       # About Ironrod Steel Co.
+      Services.tsx    # Three service pillars
     lib/
       queryClient.ts  # API request utilities
 server/
@@ -32,14 +35,25 @@ shared/
   schema.ts          # Database schema & equipment data
 ```
 
+## Pages
+- **Home** (`/`) - Hero, Inventory Grid, Pricing Calculator, Booking Form
+- **Services** (`/services`) - Three pillars: Equipment Rental, Custom Attachments, Steel Logistics
+- **About Us** (`/about`) - Ironrod Steel Co. background, certifications, Houston location
+
 ## Inventory
 ### Forklifts
 - Mitsubishi 5,000lb Lift: 19ft Mast, $750/day, $1,200/week
 - Toyota 6,000lb Industrial Lift: Heavy-duty, $800/day, $1,200/week
 
 ### Attachments
-- The 'Spreader' Attachment: 8ft-wide for 4-inch forks
-- Fork Extensions: 6ft and 8ft options
+- The 'Spreader' Attachment: 8ft WIDE for 4-inch forks (provides stability for long loads)
+- Fork Extensions: 6ft and 8ft LONG slide-on sleeves (extends reach)
+
+## Company Info
+- **Parent Company**: Ironrod Steel Co.
+- **Certifications**: SBE, MBE, HUB
+- **Location**: 8122 Hillsboro St, Houston, TX
+- **Expertise**: Steel fabrication, fencing, equipment rentals
 
 ## API Endpoints
 - `POST /api/inquiries` - Create booking inquiry
@@ -65,8 +79,8 @@ npm run db:push   # Push schema changes to database
 
 ## Recent Changes
 - Initial MVP implementation (Feb 2026)
-- Hero section with industrial forklift imagery
-- Equipment inventory grid with specs and pricing
-- Smart pricing calculator with real-time estimates
-- Booking inquiry form with validation
-- Footer with contact info and policy links
+- Added About Us page with certifications and company background
+- Added Services page with three pillars
+- Added Header navigation with external link to ironrodsteel.com
+- Updated Footer with pages navigation and main site link
+- Clarified Spreader (8ft WIDE) vs Extensions (6ft/8ft LONG) terminology
