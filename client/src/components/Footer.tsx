@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Shield, Phone, Mail, MapPin, ExternalLink } from "lucide-react";
+import { Shield, Phone, Mail, MapPin, ExternalLink, Clock } from "lucide-react";
 
 export function Footer() {
   return (
@@ -39,29 +39,39 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <div className="space-y-3 text-sm">
               <a 
-                href="tel:+15551234567" 
+                href="tel:+12819027619" 
                 className="flex items-center gap-2 text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
                 data-testid="link-phone"
               >
                 <Phone className="h-4 w-4" />
-                (555) 123-4567
+                (281) 902-7619
               </a>
               <a 
-                href="mailto:rentals@ironrods.com" 
+                href="mailto:sales@ironrodsteel.com" 
                 className="flex items-center gap-2 text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
                 data-testid="link-email"
               >
                 <Mail className="h-4 w-4" />
-                rentals@ironrods.com
+                sales@ironrodsteel.com
               </a>
-              <div 
-                className="flex items-start gap-2 text-sidebar-foreground/70"
-                data-testid="text-address"
+              <a 
+                href="https://goo.gl/maps/XVUBxvB35Dqgzm4A8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
+                data-testid="link-address"
               >
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
                 <span>
-                  1234 Industrial Blvd<br />
-                  Steel City, ST 12345
+                  8122 Hillsboro St.<br />
+                  Houston, TX 77029
+                </span>
+              </a>
+              <div className="flex items-start gap-2 text-sidebar-foreground/70 px-2 py-1 -mx-2">
+                <Clock className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                <span>
+                  Mon-Fri: 8AM - 5PM<br />
+                  Sat: 8AM - 2PM
                 </span>
               </div>
             </div>
@@ -97,29 +107,26 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Pages</h4>
             <div className="space-y-2 text-sm">
-              <Link href="/">
-                <a 
-                  className="block text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
-                  data-testid="link-footer-home"
-                >
-                  Home
-                </a>
+              <Link 
+                href="/"
+                className="block text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
+                data-testid="link-footer-home"
+              >
+                Home
               </Link>
-              <Link href="/services">
-                <a 
-                  className="block text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
-                  data-testid="link-footer-services"
-                >
-                  Services
-                </a>
+              <Link 
+                href="/services"
+                className="block text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
+                data-testid="link-footer-services"
+              >
+                Services
               </Link>
-              <Link href="/about">
-                <a 
-                  className="block text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
-                  data-testid="link-footer-about"
-                >
-                  About Us
-                </a>
+              <Link 
+                href="/about"
+                className="block text-sidebar-foreground/70 hover-elevate rounded-md px-2 py-1 -mx-2"
+                data-testid="link-footer-about"
+              >
+                About Us
               </Link>
             </div>
           </div>
@@ -130,22 +137,9 @@ export function Footer() {
             <p className="text-sm text-sidebar-foreground/60">
               &copy; {new Date().getFullYear()} Iron Rod's Equipment Rentals. All rights reserved.
             </p>
-            <div className="flex items-center gap-6 text-sm">
-              <a 
-                href="#terms" 
-                className="text-sidebar-foreground/60 hover-elevate rounded-md px-2 py-1"
-                data-testid="link-terms"
-              >
-                Terms of Service
-              </a>
-              <a 
-                href="#policy" 
-                className="text-sidebar-foreground/60 hover-elevate rounded-md px-2 py-1"
-                data-testid="link-policy"
-              >
-                Rental Policy
-              </a>
-            </div>
+            <p className="text-sm text-sidebar-foreground/60">
+              Se habla español
+            </p>
           </div>
         </div>
       </div>

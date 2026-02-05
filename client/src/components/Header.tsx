@@ -18,31 +18,30 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-sidebar border-b border-sidebar-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 flex-wrap gap-2">
-          <Link href="/">
-            <a 
-              className="flex items-center gap-2"
-              data-testid="link-home-logo"
-            >
-              <Shield className="h-6 w-6 text-primary" />
-              <span className="font-display text-xl font-bold uppercase tracking-tight text-sidebar-foreground">
-                Iron Rod's
-              </span>
-            </a>
+          <Link 
+            href="/"
+            className="flex items-center gap-2"
+            data-testid="link-home-logo"
+          >
+            <Shield className="h-6 w-6 text-primary" />
+            <span className="font-display text-xl font-bold uppercase tracking-tight text-sidebar-foreground">
+              Iron Rod's
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <a
-                  className={`px-4 py-2 rounded-md text-sm font-medium hover-elevate ${
-                    location === link.href
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "text-sidebar-foreground/70"
-                  }`}
-                  data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
-                >
-                  {link.label}
-                </a>
+              <Link 
+                key={link.href} 
+                href={link.href}
+                className={`px-4 py-2 rounded-md text-sm font-medium hover-elevate ${
+                  location === link.href
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                    : "text-sidebar-foreground/70"
+                }`}
+                data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                {link.label}
               </Link>
             ))}
             <a
@@ -77,18 +76,18 @@ export function Header() {
             <SheetContent side="right" className="bg-sidebar border-sidebar-border">
               <nav className="flex flex-col gap-2 mt-8">
                 {navLinks.map((link) => (
-                  <Link key={link.href} href={link.href}>
-                    <a
-                      className={`px-4 py-3 rounded-md text-base font-medium hover-elevate ${
-                        location === link.href
-                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                          : "text-sidebar-foreground/70"
-                      }`}
-                      onClick={() => setMobileOpen(false)}
-                      data-testid={`link-mobile-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
-                    >
-                      {link.label}
-                    </a>
+                  <Link 
+                    key={link.href} 
+                    href={link.href}
+                    className={`px-4 py-3 rounded-md text-base font-medium hover-elevate ${
+                      location === link.href
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                        : "text-sidebar-foreground/70"
+                    }`}
+                    onClick={() => setMobileOpen(false)}
+                    data-testid={`link-mobile-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    {link.label}
                   </Link>
                 ))}
                 <a

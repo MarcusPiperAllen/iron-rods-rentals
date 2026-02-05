@@ -9,8 +9,10 @@ import {
   Building2, 
   Wrench, 
   Users,
-  CheckCircle,
-  ArrowRight
+  ArrowRight,
+  Phone,
+  Mail,
+  Clock
 } from "lucide-react";
 
 export default function About() {
@@ -70,17 +72,61 @@ export default function About() {
                 </p>
               </div>
 
-              <div className="mt-8 flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                <div>
-                  <p className="font-semibold text-foreground">Our Location</p>
-                  <p 
-                    className="text-muted-foreground"
-                    data-testid="text-about-address"
-                  >
-                    8122 Hillsboro St<br />
-                    Houston, TX
-                  </p>
+              <div className="mt-8 space-y-4">
+                <a 
+                  href="https://goo.gl/maps/XVUBxvB35Dqgzm4A8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 hover-elevate rounded-md p-2 -m-2"
+                >
+                  <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Our Location</p>
+                    <p 
+                      className="text-muted-foreground"
+                      data-testid="text-about-address"
+                    >
+                      8122 Hillsboro St.<br />
+                      Houston, TX 77029
+                    </p>
+                  </div>
+                </a>
+
+                <a 
+                  href="tel:+12819027619"
+                  className="flex items-start gap-3 hover-elevate rounded-md p-2 -m-2"
+                >
+                  <Phone className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Call or Text</p>
+                    <p className="text-muted-foreground" data-testid="text-about-phone">
+                      (281) 902-7619
+                    </p>
+                  </div>
+                </a>
+
+                <a 
+                  href="mailto:sales@ironrodsteel.com"
+                  className="flex items-start gap-3 hover-elevate rounded-md p-2 -m-2"
+                >
+                  <Mail className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Email Us</p>
+                    <p className="text-muted-foreground" data-testid="text-about-email">
+                      sales@ironrodsteel.com
+                    </p>
+                  </div>
+                </a>
+
+                <div className="flex items-start gap-3 p-2 -m-2">
+                  <Clock className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-foreground">Working Hours</p>
+                    <p className="text-muted-foreground">
+                      Mon - Fri: 8:00 AM - 5:00 PM<br />
+                      Sat: 8:00 AM - 2:00 PM
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -179,9 +225,9 @@ export default function About() {
           </h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
             Whether you need a forklift for a day or a full equipment package for your project, 
-            we're here to help.
+            we're here to help. Se habla español.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <Link href="/#booking">
               <Button size="lg" data-testid="button-about-quote">
                 Request a Quote
