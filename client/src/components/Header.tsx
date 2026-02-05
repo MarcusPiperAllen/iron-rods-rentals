@@ -3,11 +3,25 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Shield, Menu, ExternalLink } from "lucide-react";
+import { SiInstagram, SiFacebook } from "react-icons/si";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About Us" },
+];
+
+const socialLinks = [
+  { 
+    href: "https://www.instagram.com/ironrod_steel/", 
+    icon: SiInstagram, 
+    label: "Instagram" 
+  },
+  { 
+    href: "https://www.facebook.com/IronrodSteel/", 
+    icon: SiFacebook, 
+    label: "Facebook" 
+  },
 ];
 
 export function Header() {
@@ -18,16 +32,18 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-sidebar border-b border-sidebar-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 flex-wrap gap-2">
-          <Link 
-            href="/"
-            className="flex items-center gap-2"
+          <a 
+            href="https://www.ironrodsteel.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover-elevate rounded-md px-2 py-1 -mx-2"
             data-testid="link-home-logo"
           >
             <Shield className="h-6 w-6 text-primary" />
             <span className="font-display text-xl font-bold uppercase tracking-tight text-sidebar-foreground">
               Iron Rod's
             </span>
-          </Link>
+          </a>
 
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
@@ -44,8 +60,25 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+            
+            <div className="flex items-center gap-1 ml-2 border-l border-sidebar-border pl-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-md text-sidebar-foreground/70 hover-elevate"
+                  data-testid={`link-social-${social.label.toLowerCase()}`}
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
+
             <a
-              href="https://ironrodsteel.com"
+              href="https://www.ironrodsteel.com"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-2"
@@ -57,7 +90,7 @@ export function Header() {
                 data-testid="button-main-site"
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Ironrod Steel Main Site
+                Main Site
               </Button>
             </a>
           </nav>
@@ -90,11 +123,28 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
+                
+                <div className="flex items-center gap-2 px-4 py-3 border-t border-sidebar-border mt-2">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-md text-sidebar-foreground/70 hover-elevate"
+                      data-testid={`link-mobile-social-${social.label.toLowerCase()}`}
+                      aria-label={social.label}
+                    >
+                      <social.icon className="h-6 w-6" />
+                    </a>
+                  ))}
+                </div>
+
                 <a
-                  href="https://ironrodsteel.com"
+                  href="https://www.ironrodsteel.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4"
+                  className="mt-2"
                 >
                   <Button 
                     variant="outline" 

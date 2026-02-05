@@ -1,6 +1,20 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Shield, Phone, Mail, MapPin, ExternalLink, Clock } from "lucide-react";
+import { SiInstagram, SiFacebook } from "react-icons/si";
+
+const socialLinks = [
+  { 
+    href: "https://www.instagram.com/ironrod_steel/", 
+    icon: SiInstagram, 
+    label: "Instagram" 
+  },
+  { 
+    href: "https://www.facebook.com/IronrodSteel/", 
+    icon: SiFacebook, 
+    label: "Facebook" 
+  },
+];
 
 export function Footer() {
   return (
@@ -8,18 +22,41 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <a 
+              href="https://www.ironrodsteel.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 mb-4 hover-elevate rounded-md w-fit"
+              data-testid="link-footer-logo"
+            >
               <Shield className="h-6 w-6 text-primary" />
               <span className="font-display text-xl font-bold uppercase tracking-tight">
                 Iron Rod's
               </span>
-            </div>
+            </a>
             <p className="text-sidebar-foreground/70 text-sm leading-relaxed mb-4">
               A division of Ironrod Steel Co. Professional equipment rentals for 
               construction sites, warehouses, and industrial operations.
             </p>
+            
+            <div className="flex items-center gap-2 mb-4">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-md text-sidebar-foreground/70 hover-elevate"
+                  data-testid={`link-footer-social-${social.label.toLowerCase()}`}
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
+
             <a
-              href="https://ironrodsteel.com"
+              href="https://www.ironrodsteel.com"
               target="_blank"
               rel="noopener noreferrer"
             >

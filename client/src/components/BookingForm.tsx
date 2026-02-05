@@ -29,6 +29,8 @@ import { insertInquirySchema, equipmentData, type InsertInquiry } from "@shared/
 import { apiRequest } from "@/lib/queryClient";
 import { ClipboardList, User, Phone, Truck, Calendar, Send, CheckCircle, Loader2 } from "lucide-react";
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzrdjpe";
+
 export function BookingForm() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
@@ -53,20 +55,83 @@ export function BookingForm() {
 
   const mutation = useMutation({
     mutationFn: async (data: InsertInquiry) => {
-      const response = await apiRequest("POST", "/api/inquiries", data);
-      return response.json();
+      const equipment = equipmentData.find(e => e.id === data.equipmentId);
+      const attachment = data.attachmentId && data.attachmentId !== "none" 
+        ? equipmentData.find(e => e.id === data.attachmentId) 
+        : null;
+
+      const emailBody = `
+NEW FORKLIFT RENTAL REQUEST
+
+Customer Information:
+- Name: ${data.name}
+- Phone: ${data.phone}
+
+Rental Details:
+- Equipment: ${equipment?.name || data.equipmentId}
+- Attachment: ${attachment?.name || 'None'}
+- Delivery Type: ${data.deliveryType === 'delivery' ? 'Delivery (we bring it)' : 'Pick-up (customer comes to us)'}
+- Pricing Type: ${data.pricingType === 'daily' ? 'Daily Rate' : 'Weekly Rate'}
+- Start Date: ${data.startDate}
+- End Date: ${data.endDate}
+
+Additional Notes:
+${data.notes || 'No additional notes'}
+      `.trim();
+
+      const formspreeResponse = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          _subject: `NEW FORKLIFT RENTAL REQUEST - ${data.name}`,
+          name: data.name,
+          phone: data.phone,
+          equipment: equipment?.name || data.equipmentId,
+          attachment: attachment?.name || 'None',
+          deliveryType: data.deliveryType,
+          pricingType: data.pricingType,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          notes: data.notes || '',
+          message: emailBody,
+        }),
+      });
+
+      if (!formspreeResponse.ok) {
+        const errorData = await formspreeResponse.json().catch(() => ({}));
+        console.error("Formspree error:", errorData);
+        throw new Error("Failed to send email notification");
+      }
+
+      console.log("Email sent successfully to sales@ironrodsteel.com");
+      console.log("Form payload:", {
+        subject: `NEW FORKLIFT RENTAL REQUEST - ${data.name}`,
+        to: "sales@ironrodsteel.com",
+        customerName: data.name,
+        phone: data.phone,
+        equipment: equipment?.name,
+        attachment: attachment?.name,
+        dates: `${data.startDate} to ${data.endDate}`
+      });
+
+      const dbResponse = await apiRequest("POST", "/api/inquiries", data);
+      return dbResponse.json();
     },
     onSuccess: () => {
       setSubmitted(true);
       toast({
         title: "Inquiry Submitted!",
-        description: "We'll get back to you within 24 hours.",
+        description: "Your request has been sent to sales@ironrodsteel.com. We'll contact you within 24 hours.",
       });
     },
     onError: (error: Error) => {
+      console.error("Submission error:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to submit inquiry. Please try again.",
+        description: error.message || "Failed to submit inquiry. Please try again or call us at (281) 902-7619.",
         variant: "destructive",
       });
     },
@@ -87,8 +152,14 @@ export function BookingForm() {
               </div>
               <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
               <p className="text-muted-foreground mb-6">
-                Your rental inquiry has been submitted successfully. 
-                Our team will contact you within 24 hours to confirm details and availability.
+                Your rental inquiry has been sent to our team at sales@ironrodsteel.com. 
+                We'll contact you within 24 hours to confirm details and availability.
+              </p>
+              <p className="text-sm text-muted-foreground mb-6">
+                Need immediate assistance? Call or text us at{" "}
+                <a href="tel:+12819027619" className="text-primary font-medium">
+                  (281) 902-7619
+                </a>
               </p>
               <Button 
                 variant="outline" 
@@ -127,7 +198,7 @@ export function BookingForm() {
               Booking Inquiry Form
             </CardTitle>
             <CardDescription>
-              All fields marked with * are required
+              All fields marked with * are required. Your inquiry will be sent directly to sales@ironrodsteel.com.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -191,7 +262,7 @@ export function BookingForm() {
                         <RadioGroup
                           onValueChange={field.onChange}
                           value={field.value}
-                          className="flex gap-6"
+                          className="flex flex-wrap gap-6"
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem 
@@ -283,7 +354,7 @@ export function BookingForm() {
                         <RadioGroup
                           onValueChange={field.onChange}
                           value={field.value}
-                          className="flex gap-6"
+                          className="flex flex-wrap gap-6"
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem 
@@ -386,7 +457,7 @@ export function BookingForm() {
                   {mutation.isPending ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Submitting...
+                      Sending to sales@ironrodsteel.com...
                     </>
                   ) : (
                     <>
