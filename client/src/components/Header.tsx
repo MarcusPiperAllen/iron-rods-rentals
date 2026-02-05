@@ -13,12 +13,12 @@ const navLinks = [
 
 const socialLinks = [
   { 
-    href: "https://www.instagram.com/ironrod_steel/", 
+    href: "https://www.instagram.com/ironrodsteelco/", 
     icon: SiInstagram, 
     label: "Instagram" 
   },
   { 
-    href: "https://www.facebook.com/IronrodSteel/", 
+    href: "https://www.facebook.com/ironrodsteelco/", 
     icon: SiFacebook, 
     label: "Facebook" 
   },
