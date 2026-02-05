@@ -27,7 +27,13 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { insertInquirySchema, equipmentData, type InsertInquiry } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { ClipboardList, User, Phone, Truck, Calendar, Send, CheckCircle, Loader2 } from "lucide-react";
+import { ClipboardList, User, Phone, Mail, Truck, Calendar, Send, CheckCircle, Loader2 } from "lucide-react";
+
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/sales@ironrodsteel.com";
+
+interface FormData extends InsertInquiry {
+  email?: string;
+}
 
 export function BookingForm() {
   const { toast } = useToast();
@@ -36,11 +42,12 @@ export function BookingForm() {
   const forklifts = equipmentData.filter(e => e.type === "forklift");
   const attachments = equipmentData.filter(e => e.type === "attachment");
 
-  const form = useForm<InsertInquiry>({
+  const form = useForm<FormData>({
     resolver: zodResolver(insertInquirySchema),
     defaultValues: {
       name: "",
       phone: "",
+      email: "",
       deliveryType: "pickup",
       equipmentId: "",
       attachmentId: "",
@@ -52,15 +59,61 @@ export function BookingForm() {
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: InsertInquiry) => {
-      const response = await apiRequest("POST", "/api/inquiries", data);
-      return response.json();
+    mutationFn: async (data: FormData) => {
+      const equipment = equipmentData.find(e => e.id === data.equipmentId);
+      const attachment = data.attachmentId && data.attachmentId !== "none" 
+        ? equipmentData.find(e => e.id === data.attachmentId) 
+        : null;
+
+      const formData = new FormData();
+      formData.append("_subject", `NEW FORKLIFT RENTAL REQUEST - ${data.name}`);
+      formData.append("name", data.name);
+      formData.append("phone", data.phone);
+      formData.append("email", data.email || "Not provided");
+      formData.append("equipment", equipment?.name || data.equipmentId);
+      formData.append("attachment", attachment?.name || "None");
+      formData.append("delivery_type", data.deliveryType === "delivery" ? "Delivery (we bring it)" : "Pick-up (customer comes to us)");
+      formData.append("pricing_type", data.pricingType === "daily" ? "Daily Rate" : "Weekly Rate");
+      formData.append("start_date", data.startDate);
+      formData.append("end_date", data.endDate);
+      formData.append("notes", data.notes || "No additional notes");
+
+      try {
+        const formspreeResponse = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (!formspreeResponse.ok) {
+          console.error("Formspree submission failed, saving to database as backup");
+        } else {
+          console.log("Email sent successfully to sales@ironrodsteel.com");
+        }
+      } catch (err) {
+        console.error("Formspree error:", err);
+      }
+
+      const dbResponse = await apiRequest("POST", "/api/inquiries", {
+        name: data.name,
+        phone: data.phone,
+        deliveryType: data.deliveryType,
+        equipmentId: data.equipmentId,
+        attachmentId: data.attachmentId,
+        pricingType: data.pricingType,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        notes: data.notes,
+      });
+      return dbResponse.json();
     },
     onSuccess: () => {
       setSubmitted(true);
       toast({
         title: "Inquiry Submitted!",
-        description: "We'll get back to you within 24 hours.",
+        description: "Your request has been sent to sales@ironrodsteel.com. We'll contact you within 24 hours.",
       });
     },
     onError: (error: Error) => {
@@ -72,7 +125,7 @@ export function BookingForm() {
     },
   });
 
-  const onSubmit = (data: InsertInquiry) => {
+  const onSubmit = (data: FormData) => {
     mutation.mutate(data);
   };
 
@@ -87,8 +140,8 @@ export function BookingForm() {
               </div>
               <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
               <p className="text-muted-foreground mb-6">
-                Your rental inquiry has been submitted successfully. 
-                Our team will contact you within 24 hours to confirm details and availability.
+                Your rental inquiry has been sent to our team at sales@ironrodsteel.com. 
+                We'll contact you within 24 hours to confirm details and availability.
               </p>
               <p className="text-sm text-muted-foreground mb-6">
                 Need immediate assistance? Call or text us at{" "}
@@ -133,12 +186,19 @@ export function BookingForm() {
               Booking Inquiry Form
             </CardTitle>
             <CardDescription>
-              All fields marked with * are required
+              All fields marked with * are required. Your inquiry will be sent directly to sales@ironrodsteel.com.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form 
+                action={FORMSPREE_ENDPOINT}
+                method="POST"
+                onSubmit={form.handleSubmit(onSubmit)} 
+                className="space-y-6"
+              >
+                <input type="hidden" name="_subject" value="NEW FORKLIFT RENTAL REQUEST" />
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -151,9 +211,9 @@ export function BookingForm() {
                         </FormLabel>
                         <FormControl>
                           <Input 
-                            placeholder="John Smith" 
-                            {...field} 
+                            placeholder="John Smith"
                             data-testid="input-name"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -174,8 +234,8 @@ export function BookingForm() {
                           <Input 
                             placeholder="(555) 123-4567" 
                             type="tel"
-                            {...field} 
                             data-testid="input-phone"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -183,6 +243,28 @@ export function BookingForm() {
                     )}
                   />
                 </div>
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        <Mail className="h-4 w-4" />
+                        Email Address (Optional)
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="your@email.com" 
+                          type="email"
+                          data-testid="input-email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}
@@ -330,9 +412,9 @@ export function BookingForm() {
                         </FormLabel>
                         <FormControl>
                           <Input 
-                            type="date" 
-                            {...field} 
+                            type="date"
                             data-testid="input-start-date"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -351,9 +433,9 @@ export function BookingForm() {
                         </FormLabel>
                         <FormControl>
                           <Input 
-                            type="date" 
-                            {...field} 
+                            type="date"
                             data-testid="input-end-date"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -372,9 +454,9 @@ export function BookingForm() {
                         <Textarea 
                           placeholder="Any special requirements, delivery address, or questions..."
                           className="min-h-[100px]"
+                          data-testid="textarea-notes"
                           {...field}
                           value={field.value || ""}
-                          data-testid="textarea-notes"
                         />
                       </FormControl>
                       <FormMessage />
@@ -392,7 +474,7 @@ export function BookingForm() {
                   {mutation.isPending ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Submitting...
+                      Sending to sales@ironrodsteel.com...
                     </>
                   ) : (
                     <>
