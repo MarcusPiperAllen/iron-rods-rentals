@@ -178,6 +178,19 @@ export function Footer() {
               Se habla español
             </p>
           </div>
+          <div className="text-center mt-4">
+            <p className="text-xs text-muted-foreground">
+              Built by{" "}
+              <a
+                href="https://marcus-piper-solutions.replit.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                Marcus Piper Solutions
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
